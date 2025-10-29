@@ -21,6 +21,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const [models, setModels] = useState<string[]>(curatedOpenRouterModels);
   const [loadingModels, setLoadingModels] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [adminPassword, setAdminPassword] = useState<string>('');
+  const [serverCfg, setServerCfg] = useState<{ provider: string; model?: string } | null>(null);
+  const [serverMsg, setServerMsg] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -33,6 +36,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
       const envModel = (import.meta as any).env?.VITE_OPENROUTER_MODEL || 'openai/gpt-4o-mini';
       setOpenRouterModel(lsModel || envModel);
     } catch {}
+    // Load global server settings if available
+    (async () => {
+      setServerMsg(null);
+      try {
+        const res = await fetch('/api/settings');
+        if (res.ok) {
+          const json = await res.json();
+          setServerCfg(json);
+        }
+      } catch {}
+    })();
   }, [isOpen]);
 
   useEffect(() => {
@@ -70,6 +84,32 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     onClose();
   };
 
+  const applyGlobally = async () => {
+    setServerMsg(null);
+    setError(null);
+    try {
+      const body: any = { password: adminPassword, provider };
+      if (provider === 'openrouter') body.model = openRouterModel;
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const t = await res.text();
+        setError('Global apply failed');
+        setServerMsg(t || '');
+        return;
+      }
+      const json = await res.json();
+      setServerCfg(json);
+      setServerMsg('Global settings saved');
+      setAdminPassword('');
+    } catch (e: any) {
+      setError('Global apply failed');
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -82,6 +122,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           </div>
 
           <div className="space-y-6">
+            {serverCfg && (
+              <div className="text-xs text-slate-500 dark:text-slate-400">
+                Global: provider <span className="font-semibold">{serverCfg.provider}</span>{serverCfg.model ? ` • model ${serverCfg.model}` : ''}
+              </div>
+            )}
             <div>
               <div className="font-semibold text-slate-800 dark:text-slate-200 mb-2">LLM Provider</div>
               <div className="flex items-center gap-4 text-sm">
@@ -113,6 +158,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 {error && <div className="text-xs text-amber-600 mt-2">{error}</div>}
               </div>
             )}
+
+            <div>
+              <div className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Admin</div>
+              <div className="flex items-center gap-2">
+                <input type="password" value={adminPassword} onChange={(e)=>setAdminPassword(e.target.value)} placeholder="Admin password" className="flex-1 p-2 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm" />
+                <button onClick={applyGlobally} className="px-3 py-2 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700">Apply globally</button>
+              </div>
+              {serverMsg && <div className="text-xs mt-2 text-slate-500 dark:text-slate-400">{serverMsg}</div>}
+            </div>
 
             <div className="flex items-center justify-end gap-3">
               <button onClick={onClose} className="px-3 py-2 text-sm rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Cancel</button>

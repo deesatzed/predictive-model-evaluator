@@ -14,7 +14,6 @@ kill_timeout = "5s"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
 
   [[http_service.checks]]
     grace_period = "10s"
@@ -24,14 +23,6 @@ kill_timeout = "5s"
     protocol = "http"
     timeout = "2s"
 
-[[services]]
-  protocol = "tcp"
-  internal_port = 8080
-
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
-
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
+[mounts]
+  source = "data"
+  destination = "/data"

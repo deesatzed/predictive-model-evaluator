@@ -45,6 +45,17 @@ const App: React.FC = () => {
       const savedContext = localStorage.getItem('aiprc:userContext');
       if (savedContext) setUserContext(savedContext);
     } catch {}
+    // Fetch global server settings (provider/model) and persist to localStorage for this client
+    (async () => {
+      try {
+        const res = await fetch('/api/settings');
+        if (res.ok) {
+          const json = await res.json();
+          if (json?.provider) localStorage.setItem('aiprc:llmProvider', String(json.provider));
+          if (json?.model) localStorage.setItem('aiprc:openrouterModel', String(json.model));
+        }
+      } catch {}
+    })();
   }, []);
 
   useEffect(() => {
@@ -52,6 +63,28 @@ const App: React.FC = () => {
       localStorage.setItem('aiprc:simulationParams', JSON.stringify(simulationParams));
     } catch {}
   }, [simulationParams]);
+
+  const handleNewScenario = useCallback(() => {
+    try {
+      localStorage.removeItem('aiprc:simulationParams');
+      localStorage.removeItem('aiprc:userContext');
+    } catch {}
+    setSimulationParams({
+      totalPatients: 1000,
+      positiveCases: 10,
+      truePositives: 8,
+      falsePositives: 50,
+      cohortSize: 1000,
+      dailyCapacity: 40,
+      workdaysPerWeek: 5,
+      slaDays: 10,
+    });
+    setUserContext('');
+    setAnalysisResult('');
+    setMoreStatsResult('');
+    setError(null);
+    try { window.location.reload(); } catch {}
+  }, []);
 
   useEffect(() => {
     try {
@@ -143,7 +176,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 font-sans">
-      <Header onOpenSettings={() => setIsSettingsOpen(true)} />
+      <Header onOpenSettings={() => setIsSettingsOpen(true)} onNewScenario={handleNewScenario} />
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       <main className="max-w-screen-2xl mx-auto p-4 md:p-8">
         <Introduction />

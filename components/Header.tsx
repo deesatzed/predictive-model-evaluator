@@ -11,7 +11,7 @@ const BrainIcon = () => (
 );
 
 
-export const Header: React.FC<{ onOpenSettings?: () => void }> = ({ onOpenSettings }) => {
+export const Header: React.FC<{ onOpenSettings?: () => void; onNewScenario?: () => void }> = ({ onOpenSettings, onNewScenario }) => {
     return (
         <header className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg sticky top-0 z-10 border-b border-slate-200 dark:border-slate-800">
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,7 +22,14 @@ export const Header: React.FC<{ onOpenSettings?: () => void }> = ({ onOpenSettin
                             Clinical Model Impact Simulator
                         </h1>
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={onNewScenario}
+                            className="px-3 py-1.5 text-sm rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+                        >
+                            New Scenario
+                        </button>
                         <button
                             type="button"
                             onClick={onOpenSettings}

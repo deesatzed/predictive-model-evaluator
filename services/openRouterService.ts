@@ -59,8 +59,8 @@ export const parseScenarioWithOpenRouter = async (context: string): Promise<Part
   const apiKey = getApiKey();
   if (!apiKey) throw new Error('OPENROUTER_API_KEY or VITE_OPENROUTER_API_KEY not set.');
   const model = getModel();
-  const system = 'You extract numbers and return only strict JSON with keys totalPatients, positiveCases, truePositives, falsePositives if present. No prose, no code fences.';
-  const user = `From the text, extract numeric values. Return only JSON.\n---\n${context}\n---`;
+  const system = 'Extract numbers and return only strict JSON with any of these keys when present: totalPatients, positiveCases, truePositives, falsePositives, cohortSize, dailyCapacity, workdaysPerWeek, slaDays, horizonDays. No prose, no code fences.';
+  const user = `From the text, extract numeric values for the keys above. Return only JSON.\n---\n${context}\n---`;
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {

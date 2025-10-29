@@ -23,6 +23,7 @@ const App: React.FC = () => {
     dailyCapacity: 40,
     workdaysPerWeek: 5,
     slaDays: 10,
+    horizonDays: 365,
   });
   
   const [userContext, setUserContext] = useState<string>('');
@@ -78,6 +79,7 @@ const App: React.FC = () => {
       dailyCapacity: 40,
       workdaysPerWeek: 5,
       slaDays: 10,
+      horizonDays: 365,
     });
     setUserContext('');
     setAnalysisResult('');
@@ -129,6 +131,11 @@ const App: React.FC = () => {
       if (parsedParams.positiveCases && !isNaN(parsedParams.positiveCases)) validParams.positiveCases = parsedParams.positiveCases;
       if (parsedParams.truePositives && !isNaN(parsedParams.truePositives)) validParams.truePositives = parsedParams.truePositives;
       if (parsedParams.falsePositives && !isNaN(parsedParams.falsePositives)) validParams.falsePositives = parsedParams.falsePositives;
+      if (parsedParams.cohortSize && !isNaN(parsedParams.cohortSize)) validParams.cohortSize = parsedParams.cohortSize;
+      if (parsedParams.dailyCapacity && !isNaN(parsedParams.dailyCapacity)) validParams.dailyCapacity = parsedParams.dailyCapacity;
+      if (parsedParams.workdaysPerWeek && !isNaN(parsedParams.workdaysPerWeek)) validParams.workdaysPerWeek = parsedParams.workdaysPerWeek;
+      if (parsedParams.slaDays && !isNaN(parsedParams.slaDays)) validParams.slaDays = parsedParams.slaDays;
+      if (parsedParams.horizonDays && !isNaN(parsedParams.horizonDays)) validParams.horizonDays = parsedParams.horizonDays;
 
       setSimulationParams(prev => ({ ...prev, ...validParams }));
     } catch (err) {

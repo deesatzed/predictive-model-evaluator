@@ -9,6 +9,7 @@ export interface SimulationParams {
   dailyCapacity?: number; // contacts per day (e.g., 40)
   workdaysPerWeek?: number; // e.g., 5
   slaDays?: number; // e.g., contact all flagged within 10 days
+  horizonDays?: number; // planning horizon (e.g., 365)
 }
 
 export interface DerivedMetrics {

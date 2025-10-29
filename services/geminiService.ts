@@ -82,6 +82,26 @@ export const parseScenarioWithGemini = async (context: string): Promise<Partial<
                             type: Type.INTEGER,
                             description: 'The number of healthy patients incorrectly flagged by the model. e.g., "flagged 50 healthy patients"'
                         },
+                        cohortSize: {
+                            type: Type.INTEGER,
+                            description: 'Operational cohort size for outreach (if stated).'
+                        },
+                        dailyCapacity: {
+                            type: Type.INTEGER,
+                            description: 'Capacity per day (e.g., 42 per day).'
+                        },
+                        workdaysPerWeek: {
+                            type: Type.INTEGER,
+                            description: 'Work days per week (e.g., 5 for weekdays only).'
+                        },
+                        slaDays: {
+                            type: Type.INTEGER,
+                            description: 'SLA days within which flags should be cleared.'
+                        },
+                        horizonDays: {
+                            type: Type.INTEGER,
+                            description: 'Planning horizon in days (e.g., 365 for 1 year).'
+                        }
                     },
                 },
             }

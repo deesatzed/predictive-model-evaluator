@@ -209,12 +209,14 @@ export const Simulator: React.FC<SimulatorProps> = ({ params, derivedMetrics, on
                             dailyCapacity={params.dailyCapacity}
                             workdaysPerWeek={params.workdaysPerWeek}
                             slaDays={params.slaDays}
+                            horizonDays={params.horizonDays}
                             onChange={(v)=>{
                                 onParamsChange({
                                     cohortSize: v.cohortSize,
                                     dailyCapacity: v.dailyCapacity,
                                     workdaysPerWeek: v.workdaysPerWeek,
                                     slaDays: v.slaDays,
+                                    horizonDays: v.horizonDays,
                                 });
                             }}
                             onFit={() => {

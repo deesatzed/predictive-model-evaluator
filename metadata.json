@@ -1,0 +1,5 @@
+{
+  "name": "Clinical Model Impact Simulator",
+  "description": "An interactive tool to simulate and explain the clinical impact of predictive models using metrics like AUPRC, especially for imbalanced datasets. Features Gemini-powered analysis to clarify complex biostatistics for stakeholders.",
+  "requestFramePermissions": []
+}

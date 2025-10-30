@@ -24,12 +24,12 @@ export const ConfusionMatrix: React.FC<ConfusionMatrixProps> = ({ params, derive
             <div></div>
             {/* Top Labels */}
             <div className="grid grid-cols-2 gap-2 text-center text-sm font-semibold text-slate-500 dark:text-slate-400">
-                <div>Predicted: ICH</div>
-                <div>Predicted: No ICH</div>
+                <div>Predicted: Positive</div>
+                <div>Predicted: Negative</div>
             </div>
 
             {/* Side Label for Row 1 */}
-            <div className="text-sm font-semibold text-right -rotate-90 text-slate-500 dark:text-slate-400">Actual: ICH Present</div>
+            <div className="text-sm font-semibold text-right -rotate-90 text-slate-500 dark:text-slate-400">Actual: Positive</div>
             {/* Data Cells for Row 1 */}
             <div className="grid grid-cols-2 gap-2">
                  <MatrixCell value={truePositives} label="True Positive" sublabel="Correctly Identified" color="bg-green-500" />
@@ -37,7 +37,7 @@ export const ConfusionMatrix: React.FC<ConfusionMatrixProps> = ({ params, derive
             </div>
 
             {/* Side Label for Row 2 */}
-            <div className="text-sm font-semibold text-right -rotate-90 text-slate-500 dark:text-slate-400">Actual: No ICH</div>
+            <div className="text-sm font-semibold text-right -rotate-90 text-slate-500 dark:text-slate-400">Actual: Negative</div>
 
              {/* Data Cells for Row 2 */}
              <div className="grid grid-cols-2 gap-2">
